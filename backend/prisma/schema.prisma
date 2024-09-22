@@ -6,3 +6,90 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserType {
+  ADMIN
+  CLIENT
+  EMPLOYEE
+}
+
+model User {
+  id       String   @id @map("id_user") @db.Uuid
+  name     String   @map("nm_user") @db.VarChar(250)
+  email    String   @unique @map("vl_email") @db.VarChar(250)
+  password String   @map("vl_password") @db.VarChar(250)
+  type     UserType @default(CLIENT) @map("tp_user")
+  phone    String   @map("vl_phone") @db.VarChar(20)
+  address  String   @map("vl_address") @db.VarChar(250)
+
+  notifications Notification[]
+  sales         Sale[]
+
+  @@map("user")
+}
+
+model Notification {
+  id          String    @id @default(uuid()) @map("id_notification") @db.Uuid
+  title       String    @map("ds_title") @db.VarChar(150)
+  description String    @map("ds_notification") @db.VarChar(500)
+  createdAt   DateTime  @default(now()) @map("dt_created")
+  readAt      DateTime? @map("dt_read")
+  recipientId String    @map("id_recipient") @db.Uuid
+
+  recipient User @relation(fields: [recipientId], references: [id])
+
+  @@map("notification")
+}
+
+model Category {
+  id          String   @id @default(uuid()) @map("id_category") @db.Uuid
+  name        String   @map("nm_category") @db.VarChar(150)
+  description String   @map("ds_category") @db.VarChar(500)
+  createdAt   DateTime @map("dt_created")
+
+  products Product[]
+
+  @@map("category")
+}
+
+model Supplier {
+  id        String   @id @default(uuid()) @map("id_supplier") @db.Uuid
+  name      String   @map("nm_supplier") @db.VarChar(150)
+  contact   String   @map("nm_contact") @db.VarChar(250)
+  createdAt DateTime @map("dt_created")
+
+  products Product[]
+
+  @@map("supplier")
+}
+
+model Product {
+  id         String   @id @default(uuid()) @map("id_product") @db.Uuid
+  name       String   @map("nm_product") @db.VarChar(250)
+  quantity   Int      @map("vl_quantity")
+  value      Float    @map("vl_product")
+  barcode    String   @unique @map("cd_barcode") @db.Text
+  createdAt  DateTime @map("dt_created")
+  categoryId String   @map("id_category") @db.Uuid
+  supplierId String   @map("id_supplier") @db.Uuid
+
+  category Category @relation(fields: [categoryId], references: [id])
+  supplier Supplier @relation(fields: [supplierId], references: [id])
+  sales    Sale[]
+
+  @@map("product")
+}
+
+model Sale {
+  id        String   @id @default(uuid()) @map("id_sale") @db.Uuid
+  value     Float    @map("vl_sale")
+  quantity  Int      @map("vl_quantity")
+  soldAt    DateTime @default(now()) @map("dt_sold")
+  productId String   @map("id_product") @db.Uuid
+  clientId  String   @map("id_client") @db.Uuid
+
+  client  User    @relation(fields: [clientId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("sale")
+}
