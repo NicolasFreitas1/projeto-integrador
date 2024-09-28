@@ -9,7 +9,6 @@ export interface ProductProps {
   barcode: string
   createdAt: Date
   categoryId: UniqueEntityId
-  supplierId: UniqueEntityId
 }
 
 export class Product extends Entity<ProductProps> {
@@ -55,14 +54,6 @@ export class Product extends Entity<ProductProps> {
 
   set categoryId(category: UniqueEntityId) {
     this.props.categoryId = category
-  }
-
-  get supplierId() {
-    return this.props.supplierId
-  }
-
-  set supplierId(supplierId: UniqueEntityId) {
-    this.props.supplierId = supplierId
   }
 
   static create(

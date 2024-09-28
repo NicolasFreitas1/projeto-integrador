@@ -5,48 +5,38 @@ import { UsersRepository } from '../../repositories/users-repository'
 import { UserAlreadyExistsError } from '../__errors/user-already-exists-error'
 import { HashGenerator } from '../../cryptography/hash-generator'
 
-interface CreateAdminUserUseCaseRequest {
+interface CreateUserUseCaseRequest {
+  login: string
   name: string
-  email: string
   password: string
-  phone: string
-  address: string
 }
 
-type CreateAdminUserUseCaseResponse = Either<
-  UserAlreadyExistsError,
-  { user: User }
->
+type CreateUserUseCaseResponse = Either<UserAlreadyExistsError, { user: User }>
 
 @Injectable()
-export class CreateAdminUserUseCase {
+export class CreateUserUseCase {
   constructor(
     private usersRepository: UsersRepository,
     private hashGenerator: HashGenerator,
   ) {}
 
   async execute({
-    address,
-    email,
+    login,
     name,
     password,
-    phone,
-  }: CreateAdminUserUseCaseRequest): Promise<CreateAdminUserUseCaseResponse> {
-    const userAlreadyExists = await this.usersRepository.findByEmail(email)
+  }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
+    const userAlreadyExists = await this.usersRepository.findByLogin(login)
 
     if (userAlreadyExists) {
-      return left(new UserAlreadyExistsError(email))
+      return left(new UserAlreadyExistsError(login))
     }
 
     const hashedPassword = await this.hashGenerator.hash(password)
 
     const user = User.create({
-      address,
-      email,
+      login,
       name,
       password: hashedPassword,
-      phone,
-      type: 'ADMIN',
     })
 
     await this.usersRepository.create(user)

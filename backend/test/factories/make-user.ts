@@ -10,11 +10,8 @@ export function makeUser(
   const user = User.create(
     {
       name: faker.person.fullName(),
-      address: faker.location.city(),
-      email: faker.internet.email(),
+      login: faker.internet.userName(),
       password: faker.internet.password(),
-      phone: faker.phone.number(),
-      type: 'CLIENT',
       ...override,
     },
     id,

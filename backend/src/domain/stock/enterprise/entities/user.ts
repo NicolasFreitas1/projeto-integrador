@@ -1,16 +1,10 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
-import { Optional } from '@/core/types/optional'
-
-export type UserType = 'ADMIN' | 'EMPLOYEE' | 'CLIENT'
 
 export interface UserProps {
   name: string
-  email: string
+  login: string
   password: string
-  type: UserType
-  phone: string
-  address: string
 }
 
 export class User extends Entity<UserProps> {
@@ -22,12 +16,12 @@ export class User extends Entity<UserProps> {
     this.props.name = name
   }
 
-  get email() {
-    return this.props.email
+  get login() {
+    return this.props.login
   }
 
-  set email(email: string) {
-    this.props.email = email
+  set login(login: string) {
+    this.props.login = login
   }
 
   get password() {
@@ -38,32 +32,8 @@ export class User extends Entity<UserProps> {
     this.props.password = password
   }
 
-  get type() {
-    return this.props.type
-  }
-
-  set type(type: UserType) {
-    this.props.type = type
-  }
-
-  get phone() {
-    return this.props.phone
-  }
-
-  set phone(phone: string) {
-    this.props.phone = phone
-  }
-
-  get address() {
-    return this.props.address
-  }
-
-  set address(address: string) {
-    this.props.address = address
-  }
-
-  static create(props: Optional<UserProps, 'type'>, id?: UniqueEntityId) {
-    const user = new User({ ...props, type: props.type ?? 'CLIENT' }, id)
+  static create(props: UserProps, id?: UniqueEntityId) {
+    const user = new User(props, id)
 
     return user
   }
