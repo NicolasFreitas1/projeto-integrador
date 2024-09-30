@@ -8,7 +8,6 @@ export interface ProductProps {
   value: number
   barcode: string
   createdAt: Date
-  categoryId: UniqueEntityId
 }
 
 export class Product extends Entity<ProductProps> {
@@ -46,14 +45,6 @@ export class Product extends Entity<ProductProps> {
 
   get createdAt() {
     return this.props.createdAt
-  }
-
-  get categoryId() {
-    return this.props.categoryId
-  }
-
-  set categoryId(category: UniqueEntityId) {
-    this.props.categoryId = category
   }
 
   static create(

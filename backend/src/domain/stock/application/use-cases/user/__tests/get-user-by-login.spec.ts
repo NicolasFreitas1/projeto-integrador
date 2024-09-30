@@ -1,25 +1,28 @@
 import { InMemoryUsersRepository } from 'test/repositories/in-memory-users-repository'
-import { GetUserByIdUseCase } from './get-user-by-id'
+import { GetUserByLoginUseCase } from '../get-user-by-login'
 import { makeUser } from 'test/factories/make-user'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 
 let inMemoryUsersRepository: InMemoryUsersRepository
-let sut: GetUserByIdUseCase
+let sut: GetUserByLoginUseCase
 
-describe('Get User by Id', () => {
+describe('Get User by Login', () => {
   beforeEach(() => {
     inMemoryUsersRepository = new InMemoryUsersRepository()
 
-    sut = new GetUserByIdUseCase(inMemoryUsersRepository)
+    sut = new GetUserByLoginUseCase(inMemoryUsersRepository)
   })
 
-  it('should be able to get an user by id', async () => {
-    const user = makeUser({ name: 'Jhon Doe' }, new UniqueEntityId('1'))
+  it('should be able to get an user by login', async () => {
+    const user = makeUser(
+      { login: 'jhon.doe', name: 'Jhon Doe' },
+      new UniqueEntityId('1'),
+    )
 
     inMemoryUsersRepository.items.push(user)
 
     const result = await sut.execute({
-      userId: '1',
+      userLogin: 'jhon.doe',
     })
 
     expect(result.isRight()).toBe(true)

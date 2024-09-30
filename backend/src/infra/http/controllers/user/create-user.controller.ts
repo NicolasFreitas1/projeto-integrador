@@ -1,3 +1,4 @@
+import { UserAlreadyExistsError } from '@/domain/stock/application/use-cases/__errors/user-already-exists-error'
 import { CreateUserUseCase } from '@/domain/stock/application/use-cases/user/create-user'
 import {
   BadRequestException,
@@ -6,9 +7,8 @@ import {
   Controller,
   Post,
 } from '@nestjs/common'
-import { CreateUserDTO, bodyValidationPipe } from './dto/create-user.dto'
-import { UserAlreadyExistsError } from '@/domain/stock/application/use-cases/__errors/user-already-exists-error'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { CreateUserDTO, bodyValidationPipe } from './dto/create-user.dto'
 
 @ApiTags('User')
 @ApiBearerAuth()

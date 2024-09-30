@@ -33,7 +33,7 @@ model Notification {
 
 model Tag {
   id   String @id @default(uuid()) @map("id_category") @db.Uuid
-  name String @map("nm_tag") @db.VarChar(150)
+  name String @unique @map("nm_tag") @db.VarChar(150)
 
   productTags ProductTag[]
 
@@ -41,13 +41,12 @@ model Tag {
 }
 
 model Product {
-  id         String   @id @default(uuid()) @map("id_product") @db.Uuid
-  name       String   @map("nm_product") @db.VarChar(250)
-  quantity   Int      @map("vl_quantity")
-  value      Float    @map("vl_product")
-  barcode    String   @unique @map("cd_barcode") @db.Text
-  createdAt  DateTime @map("dt_created")
-  categoryId String   @map("id_category") @db.Uuid
+  id        String   @id @default(uuid()) @map("id_product") @db.Uuid
+  name      String   @map("nm_product") @db.VarChar(250)
+  quantity  Int      @map("vl_quantity")
+  value     Float    @map("vl_product")
+  barcode   String   @unique @map("cd_barcode") @db.Text
+  createdAt DateTime @map("dt_created")
 
   sales Sale[]
 
@@ -61,8 +60,8 @@ model ProductTag {
   productId String @map("id_product") @db.Uuid
   tagId     String @map("id_category") @db.Uuid
 
-  tag     Tag     @relation(fields: [tagId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@map("product_tag")
 }

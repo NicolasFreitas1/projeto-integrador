@@ -1,3 +1,4 @@
+import { WrongCredentialsError } from '@/domain/stock/application/use-cases/__errors/wrong-credentials-error'
 import { AuthenticateUserUseCase } from '@/domain/stock/application/use-cases/user/authenticate-user'
 import { Public } from '@/infra/auth/public'
 import {
@@ -7,12 +8,11 @@ import {
   Post,
   UnauthorizedException,
 } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import {
   AuthenticateUserDTO,
   bodyValidationPipe,
 } from './dto/authenticate-user.dto'
-import { WrongCredentialsError } from '@/domain/stock/application/use-cases/__errors/wrong-credentials-error'
-import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('Session')
 @Public()
