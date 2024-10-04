@@ -1,8 +1,12 @@
-export interface Item {
-    id: string;
-    description: string;
+    export interface Product {
+    id: number;
     name: string;
     price: number;
-    location: string;
+  }
+  
+  export interface StockItem {
+    id: number;
+    productName: string;
+    quantity: number;
   }
   
