@@ -5,8 +5,6 @@
   padding: 100px;
 }
 
-
-
 .container h2 {
   text-align: center;
   font-size: 30px;
@@ -72,11 +70,16 @@
   border: none;
   outline: none;
   border-radius: 40px;
-  box-shadow: 0 0 10px #4CAF50;
+  box-shadow: 0 0 10px #4caf50;
   cursor: pointer;
   font-size: 16px;
-  color: #4CAF50;
+  color: #4caf50;
   font-weight: 700;
   text-shadow: none;
 }
-
+.error-message {
+  color: red; /* Cor do texto da mensagem de erro */
+  font-size: 14px; /* Tamanho da fonte */
+  margin: 10px 0; /* Margem acima e abaixo da mensagem */
+  text-align: center; /* Centraliza a mensagem */
+}
