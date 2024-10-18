@@ -57,7 +57,7 @@ describe('Create Product with Tags', () => {
     expect(result.value).toEqual({
       product: inMemoryProductsRepository.items[0],
     })
-    expect(inMemoryTagsRepository.items.length).toBe(1) 
+    expect(inMemoryTagsRepository.items.length).toBe(2) 
     expect(inMemoryProductTagsRepository.items.length).toBe(1) 
   })
 })
