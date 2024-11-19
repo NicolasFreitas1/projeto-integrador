@@ -8,3 +8,5 @@ export abstract class ProductsRepository {
   abstract save(product: Product): Promise<void>
   abstract delete(product: Product): Promise<void>
 }
+
+
