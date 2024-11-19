@@ -1,12 +1,21 @@
 version: '3.8'
 
 services:
-  postgres:
-    container_name: stock-system-pg
-    image: bitnami/postgresql
+#   postgres:
+#     container_name: stock-system-pg
+#     image: bitnami/postgresql
+#     ports:
+#       - 5432:5432
+#     environment:
+#       - POSTGRESQL_USERNAME=docker
+#       - POSTGRESQL_PASSWORD=docker
+#       - POSTGRESQL_DATABASE=stock-system
+
+  server_stock_system:
+    build:
+      context: ./
+      dockerfile: /docker/development/Dockerfile
+    image: server_stock_system
     ports:
-      - 5432:5432
-    environment:
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=stock-system
+      - '5000:5000'
+    restart: always
