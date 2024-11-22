@@ -50,7 +50,7 @@ model Product {
 
   sales Sale[]
 
-  productTag ProductTag[]
+  productTags ProductTag[]
 
   @@map("product")
 }

@@ -1,4 +1,4 @@
-import { Either, right } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { Product } from '@/domain/stock/enterprise/entities/product'
 import { Injectable } from '@nestjs/common'
 import { ProductsRepository } from '../../repositories/products-repository'
@@ -7,6 +7,7 @@ import { ProductTagsRepository } from '../../repositories/product-tags-repositor
 import { Tag } from '@/domain/stock/enterprise/entities/tag'
 import { ProductTag } from '@/domain/stock/enterprise/entities/product-tag'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { ProductAlreadyExistsError } from '../__errors/product-already-exists'
 
 interface CreateProductWithTagsUseCaseRequest {
   name: string
@@ -17,7 +18,7 @@ interface CreateProductWithTagsUseCaseRequest {
 }
 
 type CreateProductWithTagsUseCaseResponse = Either<
-  null,
+  ProductAlreadyExistsError,
   {
     product: Product
   }
@@ -38,6 +39,13 @@ export class CreateProductWithTagsUseCase {
     value,
     tagNames,
   }: CreateProductWithTagsUseCaseRequest): Promise<CreateProductWithTagsUseCaseResponse> {
+    const productAlreadyExists =
+      await this.productsRepository.findByBarcode(barcode)
+
+    if (productAlreadyExists) {
+      return left(new ProductAlreadyExistsError(barcode))
+    }
+
     const tagsIds: string[] = []
 
     for (const tagName of tagNames) {
@@ -45,7 +53,7 @@ export class CreateProductWithTagsUseCase {
 
       if (!tag) {
         const newTag = Tag.create({
-          name,
+          name: tagName,
         })
 
         await this.tagsRepository.create(newTag)

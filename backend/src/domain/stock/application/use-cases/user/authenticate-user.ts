@@ -4,6 +4,7 @@ import { HashComparer } from '../../cryptography/hash-comparer'
 import { Encrypter } from '../../cryptography/encrypter'
 import { Either, left, right } from '@/core/either'
 import { WrongCredentialsError } from '../__errors/wrong-credentials-error'
+import { User } from '@/domain/stock/enterprise/entities/user'
 
 interface AuthenticateUserUseCaseRequest {
   login: string
@@ -14,6 +15,7 @@ type AuthenticateUserUseCaseResponse = Either<
   WrongCredentialsError,
   {
     accessToken: string
+    user: User
   }
 >
 
@@ -50,6 +52,7 @@ export class AuthenticateUserUseCase {
 
     return right({
       accessToken,
+      user,
     })
   }
 }

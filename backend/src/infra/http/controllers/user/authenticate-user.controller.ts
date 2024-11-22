@@ -13,6 +13,7 @@ import {
   AuthenticateUserDTO,
   bodyValidationPipe,
 } from './dto/authenticate-user.dto'
+import { UserPresenter } from '../../presenters/user-presenter'
 
 @ApiTags('Session')
 @Public()
@@ -40,10 +41,11 @@ export class AuthenticateUserController {
       }
     }
 
-    const { accessToken } = result.value
+    const { accessToken, user } = result.value
 
     return {
       access_token: accessToken,
+      user: UserPresenter.toHTTP(user),
     }
   }
 }

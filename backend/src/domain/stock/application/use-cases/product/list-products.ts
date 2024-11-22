@@ -1,5 +1,5 @@
 import { Either, right } from '@/core/either'
-import { Product } from '@/domain/stock/enterprise/entities/product'
+import { ProductWithTags } from '@/domain/stock/enterprise/entities/value-objects/product-with-tags'
 import { Injectable } from '@nestjs/common'
 import { ProductsRepository } from '../../repositories/products-repository'
 
@@ -10,7 +10,7 @@ interface ListProductsUseCaseRequest {
 type ListProductsUseCaseResponse = Either<
   null,
   {
-    products: Product[]
+    products: ProductWithTags[]
   }
 >
 
@@ -21,7 +21,7 @@ export class ListProductsUseCase {
   async execute({
     page,
   }: ListProductsUseCaseRequest): Promise<ListProductsUseCaseResponse> {
-    const products = await this.productsRepository.findMany({ page })
+    const products = await this.productsRepository.findManyWithTags({ page })
 
     return right({
       products,

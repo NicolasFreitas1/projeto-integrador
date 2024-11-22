@@ -4,7 +4,7 @@ import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
 import { ListProductsUseCase } from '@/domain/stock/application/use-cases/product/list-products'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { z } from 'zod'
-import { ProductPresenter } from '../../presenters/product-presenter'
+import { ProductWithTagsPresenter } from '../../presenters/product-with-tags-presenter'
 
 const pageQueryParamSchema = z
   .string()
@@ -35,6 +35,6 @@ export class ListProductsController {
 
     const products = result.value.products
 
-    return products.map(ProductPresenter.toHTTP)
+    return products.map(ProductWithTagsPresenter.toHTTP)
   }
 }

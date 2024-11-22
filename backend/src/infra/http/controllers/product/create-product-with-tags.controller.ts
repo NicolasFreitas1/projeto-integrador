@@ -1,10 +1,17 @@
 import { CreateProductWithTagsUseCase } from '@/domain/stock/application/use-cases/product/create-product-with-tags'
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  Post,
+} from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import {
   bodyValidationPipe,
   CreateProductWithTagsDTO,
 } from './dto/create-product-with-tags.dto'
+import { ProductAlreadyExistsError } from '@/domain/stock/application/use-cases/__errors/product-already-exists'
 
 @ApiTags('Product')
 @ApiBearerAuth()
@@ -27,7 +34,14 @@ export class CreateProductWithTagsController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case ProductAlreadyExistsError:
+          throw new ConflictException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
   }
 }
