@@ -7,7 +7,7 @@ export interface SaleProps {
   quantity: number
   soldAt: Date
   productId: UniqueEntityId
-  clientId: UniqueEntityId
+  sellerId: UniqueEntityId
 }
 
 export class Sale extends Entity<SaleProps> {
@@ -43,12 +43,12 @@ export class Sale extends Entity<SaleProps> {
     this.props.productId = productId
   }
 
-  get clientId() {
-    return this.props.clientId
+  get sellerId() {
+    return this.props.sellerId
   }
 
-  set clientId(clientId: UniqueEntityId) {
-    this.props.clientId = clientId
+  set sellerId(sellerId: UniqueEntityId) {
+    this.props.sellerId = sellerId
   }
 
   static create(props: Optional<SaleProps, 'soldAt'>, id?: UniqueEntityId) {

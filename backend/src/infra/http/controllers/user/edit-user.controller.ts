@@ -23,13 +23,12 @@ export class EditUserController {
     @Body(bodyValidationPipe) body: EditUserDTO,
     @Param('id', ParseUUIDPipe) userId: string,
   ) {
-    const { login, name, password } = body
+    const { login, name } = body
 
     const result = await this.editUser.execute({
       userId,
       login,
       name,
-      password,
     })
 
     if (result.isLeft()) {

@@ -8,27 +8,15 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid()) @map("id_user") @db.Uuid
-  name     String @map("nm_user") @db.VarChar(250)
-  login    String @unique @map("nm_login") @db.VarChar(150)
-  password String @map("vl_password") @db.VarChar(250)
+  id       String  @id @default(uuid()) @map("id_user") @db.Uuid
+  name     String  @map("nm_user") @db.VarChar(250)
+  login    String  @unique @map("nm_login") @db.VarChar(150)
+  password String  @map("vl_password") @db.VarChar(250)
+  isAdmin  Boolean @default(false) @map("bl_is_admin")
 
-  notifications Notification[]
+  Sale Sale[]
 
   @@map("user")
-}
-
-model Notification {
-  id          String    @id @default(uuid()) @map("id_notification") @db.Uuid
-  title       String    @map("ds_title") @db.VarChar(150)
-  description String    @map("ds_notification") @db.VarChar(500)
-  createdAt   DateTime  @default(now()) @map("dt_created")
-  readAt      DateTime? @map("dt_read")
-  recipientId String    @map("id_recipient") @db.Uuid
-
-  recipient User @relation(fields: [recipientId], references: [id])
-
-  @@map("notification")
 }
 
 model Tag {
@@ -72,7 +60,9 @@ model Sale {
   quantity  Int      @map("vl_quantity")
   soldAt    DateTime @default(now()) @map("dt_sold")
   productId String   @map("id_product") @db.Uuid
+  sellerId  String   @map("id_seller") @db.Uuid
 
+  seller  User    @relation(fields: [sellerId], references: [id])
   product Product @relation(fields: [productId], references: [id])
 
   @@map("sale")

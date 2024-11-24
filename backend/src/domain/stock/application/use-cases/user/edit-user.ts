@@ -9,7 +9,6 @@ interface EditUserUseCaseRequest {
   userId: string
   name: string
   login: string
-  password: string
 }
 
 type EditUserUseCaseResponse = Either<
@@ -29,7 +28,6 @@ export class EditUserUseCase {
   async execute({
     login,
     name,
-    password,
     userId,
   }: EditUserUseCaseRequest): Promise<EditUserUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
@@ -40,7 +38,6 @@ export class EditUserUseCase {
 
     user.name = name
     user.login = login
-    user.password = await this.hashGenerator.hash(password)
 
     await this.usersRepository.save(user)
 
