@@ -62,6 +62,26 @@ export function UpsertSaleDialog({
   const [users, setUsers] = useState<User[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
 
+  async function listUsers() {
+    try {
+      const users = await getUsers();
+
+      setUsers(users ?? []);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function listProducts() {
+    try {
+      const products = await getProducts();
+
+      setProducts(products ?? []);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues ?? {
@@ -76,7 +96,7 @@ export function UpsertSaleDialog({
 
   const onSubmit = async (data: FormSchema) => {
     try {
-      await upsertSale({ ...data, id: saleId, soldAt: data.soldAt.toString() });
+      await upsertSale({ ...data, id: saleId });
       setIsOpen(false);
       form.reset();
       toast.success(
@@ -89,31 +109,20 @@ export function UpsertSaleDialog({
   };
 
   useEffect(() => {
-    async function listUsers() {
-      try {
-        const users = await getUsers();
-        setUsers(users ?? []);
-      } catch (e) {
-        console.log(e);
-      }
+    if (isOpen) {
+      listUsers();
     }
-    listUsers();
-  }, []);
+  }, [isOpen]);
 
   useEffect(() => {
-    async function listProducts() {
-      try {
-        const products = await getProducts();
-
-        console.log(products);
-
-        setProducts(products ?? []);
-      } catch (e) {
-        console.log(e);
-      }
+    if (isOpen) {
+      listProducts();
     }
-    listProducts();
-  }, []);
+  }, [isOpen]);
+
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
   return (
     <Dialog
@@ -180,7 +189,7 @@ export function UpsertSaleDialog({
               name="sellerId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Produto</FormLabel>
+                  <FormLabel>Vendedor</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}

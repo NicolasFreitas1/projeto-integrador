@@ -26,6 +26,15 @@ export const saleColumns: ColumnDef<SaleWithNames>[] = [
     },
   },
   {
+    accessorKey: "value",
+    header: "Valor da venda",
+    cell: ({ row: { original: sale } }) =>
+      new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(Number(sale.value)),
+  },
+  {
     accessorKey: "sellerName",
     header: "Vendedor",
   },

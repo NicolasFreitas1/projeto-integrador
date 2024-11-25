@@ -1,14 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Sale } from "@/app/_types/sale";
 import { apiServer } from "@/app/_lib/axios";
+import { UpsertSaleSchema } from "./schema";
 
-interface UpsertSaleData extends Omit<Sale, "id"> {
-  id?: string; // Presente em caso de atualização
-}
-
-export async function upsertSale(data: UpsertSaleData): Promise<void> {
+export async function upsertSale(data: UpsertSaleSchema): Promise<void> {
   const url = data.id
     ? `http://localhost:5001/sale/${data.id}`
     : "http://localhost:5001/sale";

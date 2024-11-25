@@ -1,7 +1,10 @@
 import { z } from "zod";
 
-export const upsertUserSchema = z.object({
-  name: z.string().trim().min(1),
-  login: z.string().trim().min(1),
-  password: z.string().trim().min(6),
+export const upsertSaleSchema = z.object({
+  id: z.string().optional(),
+  productId: z.string().uuid(),
+  quantity: z.number(),
+  sellerId: z.string().uuid(),
 });
+
+export type UpsertSaleSchema = z.infer<typeof upsertSaleSchema>;

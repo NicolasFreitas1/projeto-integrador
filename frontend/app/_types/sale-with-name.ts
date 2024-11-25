@@ -4,6 +4,7 @@ export interface SaleWithNames {
   productName: string;
   quantity: number;
   soldAt: string;
+  value: number;
   sellerId: string;
   sellerName: string;
 }

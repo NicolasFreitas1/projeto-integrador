@@ -26,7 +26,7 @@ export default function EditSaleButton({ sale }: EditSaleButtonProps) {
       <UpsertSaleDialog
         isOpen={dialogIsOpen}
         setIsOpen={setDialogIsOpen}
-        defaultValues={sale}
+        defaultValues={{ ...sale, soldAt: new Date(sale.soldAt) }}
         saleId={sale.id}
       />
     </>
