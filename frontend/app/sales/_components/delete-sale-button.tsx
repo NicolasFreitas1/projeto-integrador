@@ -24,7 +24,7 @@ export default function DeleteSaleButton({ saleId }: DeleteSaleButtonProps) {
     <Button
       variant="ghost"
       size="icon"
-      className="text-red-600"
+      className="text-muted-foreground"
       onClick={handleDelete}
     >
       <TrashIcon />

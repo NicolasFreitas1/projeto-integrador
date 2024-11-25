@@ -1,13 +1,13 @@
 "use client";
 
+import { SaleWithNames } from "@/app/_types/sale-with-name";
 import { ColumnDef } from "@tanstack/react-table";
-import { Sale } from "@/app/_types/sale";
-import EditSaleButton from "../_components/edit-sale-button";
 import DeleteSaleButton from "../_components/delete-sale-button";
+import EditSaleButton from "../_components/edit-sale-button";
 
-export const saleColumns: ColumnDef<Sale>[] = [
+export const saleColumns: ColumnDef<SaleWithNames>[] = [
   {
-    accessorKey: "productId",
+    accessorKey: "productName",
     header: "Produto",
   },
   {
@@ -18,12 +18,15 @@ export const saleColumns: ColumnDef<Sale>[] = [
     accessorKey: "soldAt",
     header: "Data da Venda",
     cell: ({ row: { original } }) => {
-      const date = new Date(original.soldAt);
-      return date.toLocaleString();
+      return new Date(original.soldAt).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
     },
   },
   {
-    accessorKey: "sellerId",
+    accessorKey: "sellerName",
     header: "Vendedor",
   },
   {

@@ -1,14 +1,41 @@
 "use client";
 
 import { Button } from "@/app/_components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/app/_components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/app/_components/ui/dialog";
 import { Input } from "@/app/_components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/app/_components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { upsertSale } from "../_actions/upsert-sale";
 import { toast } from "sonner";
+import { DatePicker } from "@/app/_components/ui/date-picker";
+import { getUsers } from "@/app/users/_data/get-users";
+import { useEffect, useState } from "react";
+import { User } from "@/app/_types/user";
+import { Product } from "@/app/_types/product";
+import { getProducts } from "@/app/products/_data/get-products";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/_components/ui/select";
 
 interface UpsertSaleDialogProps {
   isOpen: boolean;
@@ -21,6 +48,7 @@ const formSchema = z.object({
   productId: z.string().uuid("Produto inválido."),
   quantity: z.number().int().positive("A quantidade deve ser positiva."),
   sellerId: z.string().uuid("Vendedor inválido."),
+  soldAt: z.date(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -31,12 +59,16 @@ export function UpsertSaleDialog({
   saleId,
   defaultValues,
 }: UpsertSaleDialogProps) {
+  const [users, setUsers] = useState<User[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: defaultValues ?? {
       productId: "",
       quantity: 1,
       sellerId: "",
+      soldAt: new Date(),
     },
   });
 
@@ -44,15 +76,44 @@ export function UpsertSaleDialog({
 
   const onSubmit = async (data: FormSchema) => {
     try {
-      await upsertSale({ ...data, id: saleId });
+      await upsertSale({ ...data, id: saleId, soldAt: data.soldAt.toString() });
       setIsOpen(false);
       form.reset();
-      toast.success(`Venda ${isUpdate ? "atualizada" : "adicionada"} com sucesso!`);
+      toast.success(
+        `Venda ${isUpdate ? "atualizada" : "adicionada"} com sucesso!`
+      );
     } catch (error) {
       console.error(error);
       toast.error("Erro ao salvar a venda.");
     }
   };
+
+  useEffect(() => {
+    async function listUsers() {
+      try {
+        const users = await getUsers();
+        setUsers(users ?? []);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    listUsers();
+  }, []);
+
+  useEffect(() => {
+    async function listProducts() {
+      try {
+        const products = await getProducts();
+
+        console.log(products);
+
+        setProducts(products ?? []);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    listProducts();
+  }, []);
 
   return (
     <Dialog
@@ -74,9 +135,23 @@ export function UpsertSaleDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Produto</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ID do Produto" {...field} />
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o produto..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {products.map((product) => (
+                        <SelectItem key={product.id} value={product.id}>
+                          {product.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -88,7 +163,13 @@ export function UpsertSaleDialog({
                 <FormItem>
                   <FormLabel>Quantidade</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="Quantidade" {...field} />
+                    <Input
+                      type="number"
+                      placeholder="Quantidade"
+                      {...field}
+                      value={field.value || 0}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,16 +180,48 @@ export function UpsertSaleDialog({
               name="sellerId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Vendedor</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ID do Vendedor" {...field} />
-                  </FormControl>
+                  <FormLabel>Produto</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o vendedor..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {users.map((user) => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="soldAt"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data da venda</FormLabel>
+                  <DatePicker value={field.value} onChange={field.onChange} />
                   <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
-              <Button type="submit">{isUpdate ? "Atualizar" : "Adicionar"}</Button>
+              <DialogClose asChild>
+                <Button type="button" variant="outline">
+                  Cancelar
+                </Button>
+              </DialogClose>
+              <Button type="submit">
+                {isUpdate ? "Atualizar" : "Adicionar"}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

@@ -2,27 +2,28 @@
 
 import { revalidatePath } from "next/cache";
 import { Sale } from "@/app/_types/sale";
+import { apiServer } from "@/app/_lib/axios";
 
-interface UpsertSaleData extends Omit<Sale, "id" | "soldAt"> {
+interface UpsertSaleData extends Omit<Sale, "id"> {
   id?: string; // Presente em caso de atualização
 }
 
 export async function upsertSale(data: UpsertSaleData): Promise<void> {
-  const url = data.id ? `http://localhost:5000/sale/${data.id}` : "http://localhost:5000/sale";
+  const url = data.id
+    ? `http://localhost:5001/sale/${data.id}`
+    : "http://localhost:5001/sale";
   const method = data.id ? "PUT" : "POST";
 
-  const response = await fetch(url, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    await apiServer({
+      method,
+      url,
+      data,
+    });
 
-  if (!response.ok) {
-    throw new Error("Erro ao salvar a venda");
+    // Revalida o caminho para atualizar a listagem
+    revalidatePath("/sales");
+  } catch (e) {
+    console.log(e);
   }
-
-  // Revalida o caminho para atualizar a listagem
-  revalidatePath("/sales");
 }
