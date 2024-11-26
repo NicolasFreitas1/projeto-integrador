@@ -2,12 +2,22 @@ import { Entity } from '@/core/entities/entity'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
+export type PaymentMethod =
+  | 'CREDIT_CARD'
+  | 'DEBIT_CARD'
+  | 'BANK_TRANSFER'
+  | 'BANK_SLIP'
+  | 'CASH'
+  | 'PIX'
+  | 'OTHER'
+
 export interface SaleProps {
   value: number
   quantity: number
   soldAt: Date
   productId: UniqueEntityId
   sellerId: UniqueEntityId
+  paymentMethod: PaymentMethod
 }
 
 export class Sale extends Entity<SaleProps> {
@@ -41,6 +51,14 @@ export class Sale extends Entity<SaleProps> {
 
   set productId(productId: UniqueEntityId) {
     this.props.productId = productId
+  }
+
+  get paymentMethod() {
+    return this.props.paymentMethod
+  }
+
+  set paymentMethod(paymentMethod: PaymentMethod) {
+    this.props.paymentMethod = paymentMethod
   }
 
   get sellerId() {

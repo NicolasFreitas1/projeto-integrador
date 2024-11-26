@@ -23,7 +23,7 @@ export class EditSaleController {
     @Body(bodyValidationPipe) body: EditSaleDTO,
     @Param('id', ParseUUIDPipe) saleId: string,
   ) {
-    const { productId, quantity, sellerId, soldAt } = body
+    const { productId, quantity, sellerId, soldAt, paymentMethod } = body
 
     const result = await this.editSale.execute({
       saleId,
@@ -31,6 +31,7 @@ export class EditSaleController {
       quantity,
       sellerId,
       soldAt,
+      paymentMethod,
     })
 
     if (result.isLeft()) {

@@ -12,6 +12,14 @@ interface CreateSaleUseCaseRequest {
   soldAt: Date
   productId: string
   sellerId: string
+  paymentMethod:
+    | 'CREDIT_CARD'
+    | 'DEBIT_CARD'
+    | 'BANK_TRANSFER'
+    | 'BANK_SLIP'
+    | 'CASH'
+    | 'PIX'
+    | 'OTHER'
 }
 
 type CreateSaleUseCaseResponse = Either<
@@ -34,6 +42,7 @@ export class CreateSaleUseCase {
     quantity,
     sellerId,
     soldAt,
+    paymentMethod,
   }: CreateSaleUseCaseRequest): Promise<CreateSaleUseCaseResponse> {
     const seller = await this.usersRepository.findById(sellerId)
 
@@ -57,6 +66,7 @@ export class CreateSaleUseCase {
       sellerId: seller.id,
       value: product.value * quantity,
       soldAt,
+      paymentMethod,
     })
 
     await this.salesRepository.create(sale)

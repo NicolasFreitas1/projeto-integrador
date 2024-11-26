@@ -55,15 +55,26 @@ model ProductTag {
 }
 
 model Sale {
-  id        String   @id @default(uuid()) @map("id_sale") @db.Uuid
-  value     Float    @map("vl_sale")
-  quantity  Int      @map("vl_quantity")
-  soldAt    DateTime @default(now()) @map("dt_sold")
-  productId String   @map("id_product") @db.Uuid
-  sellerId  String   @map("id_seller") @db.Uuid
+  id            String        @id @default(uuid()) @map("id_sale") @db.Uuid
+  value         Float         @map("vl_sale")
+  quantity      Int           @map("vl_quantity")
+  soldAt        DateTime      @default(now()) @map("dt_sold")
+  productId     String        @map("id_product") @db.Uuid
+  sellerId      String        @map("id_seller") @db.Uuid
+  paymentMethod PaymentMethod @map("tp_payment_method")
 
   seller  User    @relation(fields: [sellerId], references: [id])
   product Product @relation(fields: [productId], references: [id])
 
   @@map("sale")
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  BANK_TRANSFER
+  BANK_SLIP
+  CASH
+  PIX
+  OTHER
 }

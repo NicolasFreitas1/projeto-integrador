@@ -13,6 +13,14 @@ interface EditSaleUseCaseRequest {
   soldAt: Date
   productId: string
   sellerId: string
+  paymentMethod:
+    | 'CREDIT_CARD'
+    | 'DEBIT_CARD'
+    | 'BANK_TRANSFER'
+    | 'BANK_SLIP'
+    | 'CASH'
+    | 'PIX'
+    | 'OTHER'
 }
 
 type EditSaleUseCaseResponse = Either<
@@ -36,6 +44,7 @@ export class EditSaleUseCase {
     quantity,
     sellerId,
     soldAt,
+    paymentMethod,
   }: EditSaleUseCaseRequest): Promise<EditSaleUseCaseResponse> {
     const sale = await this.salesRepository.findById(saleId)
 
@@ -68,6 +77,7 @@ export class EditSaleUseCase {
     sale.quantity = quantity
     sale.value = product.value * quantity
     sale.soldAt = soldAt
+    sale.paymentMethod = paymentMethod
 
     await this.salesRepository.save(sale)
     await this.productsRepository.save(product)

@@ -10,6 +10,7 @@ export class PrismaSaleMapper {
         quantity: raw.quantity,
         sellerId: new UniqueEntityId(raw.sellerId),
         value: raw.value,
+        paymentMethod: raw.paymentMethod,
       },
       new UniqueEntityId(raw.id),
     )
@@ -23,6 +24,7 @@ export class PrismaSaleMapper {
       sellerId: sale.sellerId.toString(),
       value: sale.value,
       soldAt: sale.soldAt,
+      paymentMethod: sale.paymentMethod,
     }
   }
 }

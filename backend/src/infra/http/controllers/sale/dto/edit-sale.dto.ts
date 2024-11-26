@@ -1,5 +1,6 @@
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { ApiProperty } from '@nestjs/swagger'
+import { PaymentMethod } from '@prisma/client'
 import { z } from 'zod'
 
 const editSaleBodySchema = z.object({
@@ -10,6 +11,7 @@ const editSaleBodySchema = z.object({
     .transform((a) => new Date(a))
     .pipe(z.date()),
   sellerId: z.string().uuid(),
+  paymentMethod: z.nativeEnum(PaymentMethod),
 })
 
 type EditSaleBodySchema = z.infer<typeof editSaleBodySchema>
@@ -28,4 +30,14 @@ export class EditSaleDTO implements EditSaleBodySchema {
 
   @ApiProperty()
   sellerId: string
+
+  @ApiProperty()
+  paymentMethod:
+    | 'CREDIT_CARD'
+    | 'DEBIT_CARD'
+    | 'BANK_TRANSFER'
+    | 'BANK_SLIP'
+    | 'CASH'
+    | 'PIX'
+    | 'OTHER'
 }

@@ -19,13 +19,14 @@ export class CreateSaleController {
 
   @Post()
   async handle(@Body(bodyValidationPipe) body: CreateSaleDTO) {
-    const { productId, quantity, sellerId, soldAt } = body
+    const { productId, quantity, sellerId, soldAt, paymentMethod } = body
 
     const result = await this.createSaleUseCase.execute({
       productId,
       quantity,
       sellerId,
       soldAt,
+      paymentMethod,
     })
 
     if (result.isLeft()) {
