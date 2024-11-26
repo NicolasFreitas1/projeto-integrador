@@ -5,6 +5,7 @@ import { ProductModule } from './controllers/product/product.module'
 import { TagModule } from './controllers/tag/tag.module'
 import { UserModule } from './controllers/user/user.module'
 import { SaleModule } from './controllers/sale/sale.module'
+import { DashboardModule } from './controllers/dashboard/dashboard.module'
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SaleModule } from './controllers/sale/sale.module'
     TagModule,
     ProductModule,
     SaleModule,
+    DashboardModule,
   ],
 })
 export class HttpModule {}

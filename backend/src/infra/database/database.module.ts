@@ -10,6 +10,8 @@ import { ProductTagsRepository } from '@/domain/stock/application/repositories/p
 import { PrismaProductTagsRepository } from './prisma/repositories/prisma-product-tags-repository'
 import { SalesRepository } from '@/domain/stock/application/repositories/sales-repository'
 import { PrismaSalesRepository } from './prisma/repositories/prisma-sales-repository'
+import { DashboardRepository } from '@/domain/stock/application/repositories/dashboard-repository'
+import { PrismaDashboardRepository } from './prisma/repositories/prisma-dashboard-repository'
 
 @Module({
   providers: [
@@ -34,6 +36,10 @@ import { PrismaSalesRepository } from './prisma/repositories/prisma-sales-reposi
       provide: SalesRepository,
       useClass: PrismaSalesRepository,
     },
+    {
+      provide: DashboardRepository,
+      useClass: PrismaDashboardRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -42,6 +48,7 @@ import { PrismaSalesRepository } from './prisma/repositories/prisma-sales-reposi
     ProductsRepository,
     ProductTagsRepository,
     SalesRepository,
+    DashboardRepository,
   ],
 })
 export class DatabaseModule {}
