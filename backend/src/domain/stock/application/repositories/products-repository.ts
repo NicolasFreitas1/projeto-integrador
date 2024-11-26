@@ -4,6 +4,7 @@ import { ProductWithTags } from '../../enterprise/entities/value-objects/product
 
 export abstract class ProductsRepository {
   abstract findMany(params: PaginationParams): Promise<Product[]>
+  abstract findManyWithLowQuantity(): Promise<Product[]>
   abstract findManyWithTags(
     params: PaginationParams,
   ): Promise<ProductWithTags[]>

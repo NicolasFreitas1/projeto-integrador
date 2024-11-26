@@ -20,6 +20,22 @@ export class PrismaProductsRepository implements ProductsRepository {
     return products.map(PrismaProductMapper.toDomain)
   }
 
+  async findManyWithLowQuantity(): Promise<Product[]> {
+    const products = await this.prisma.product.findMany({
+      where: {
+        quantity: {
+          lte: 10,
+        },
+      },
+      orderBy: {
+        quantity: 'asc',
+      },
+      take: 15,
+    })
+
+    return products.map(PrismaProductMapper.toDomain)
+  }
+
   async findManyWithTags({
     page,
   }: PaginationParams): Promise<ProductWithTags[]> {
