@@ -9,6 +9,7 @@ export class SalePresenter {
       soldAt: sale.soldAt,
       productId: sale.productId.toString(),
       sellerId: sale.sellerId.toString(),
+      paymentMethod: sale.paymentMethod,
     }
   }
 }
