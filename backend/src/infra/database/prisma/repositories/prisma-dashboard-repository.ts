@@ -50,11 +50,7 @@ export class PrismaDashboardRepository implements DashboardRepository {
       },
     })
 
-    const totalStock = await this.prisma.product.aggregate({
-      _sum: {
-        quantity: true,
-      },
-    })
+    const totalStock = await this.prisma.product.count()
 
     const totalMissing = await this.prisma.product.count({
       where: {
@@ -75,7 +71,7 @@ export class PrismaDashboardRepository implements DashboardRepository {
       revenueGenerated: revenueGenerated._sum.value ?? 0,
       totalInRisk,
       totalMissing,
-      totalStock: totalStock._sum.quantity ?? 0,
+      totalStock,
     })
   }
 }

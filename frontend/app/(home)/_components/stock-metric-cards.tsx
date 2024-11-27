@@ -32,11 +32,10 @@ export function StockMetricCards({
       />
 
       {/* OUTROS CARDS */}
-      {/* Produtos catalogados */}
       <div className="grid grid-cols-3 gap-6">
         <MetricCard
           icon={<Package size={16} />}
-          title="Total no estoque"
+          title="Produtos catalogados"
           value={totalStock}
         />
         <MetricCard
