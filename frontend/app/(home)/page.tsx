@@ -4,15 +4,10 @@ import { isMatch } from "date-fns";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Navbar from "../_components/navbar";
-import TimeSelect from "./_components/time-select";
 import { getDashboard } from "../_data/get-dashboard";
-import { LowStockProducts } from "./_components/low-stock-products";
+import { CarouselStock } from "./_components/carousel-stock";
 import { StockMetricCards } from "./_components/stock-metric-cards";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "../_components/ui/carousel";
+import TimeSelect from "./_components/time-select";
 
 interface HomeProps {
   searchParams: { month: string };
@@ -32,8 +27,6 @@ export default async function HomePage({ searchParams: { month } }: HomeProps) {
   }
 
   const dashboard = await getDashboard();
-
-  console.log(dashboard);
 
   return (
     <>
@@ -55,24 +48,7 @@ export default async function HomePage({ searchParams: { month } }: HomeProps) {
           </div>
           {/* TABELA DE ULTIMAS VENDAS */}
 
-          <Carousel>
-            <CarouselContent>
-              <CarouselItem>
-                {dashboard && (
-                  <LowStockProducts
-                    lowStockProducts={dashboard?.lowQuantityProducts}
-                  />
-                )}
-              </CarouselItem>
-              <CarouselItem>
-                {dashboard && (
-                  <LowStockProducts
-                    lowStockProducts={dashboard?.lowQuantityProducts}
-                  />
-                )}
-              </CarouselItem>
-            </CarouselContent>
-          </Carousel>
+          <CarouselStock lowQuantityProducts={dashboard.lowQuantityProducts} />
         </div>
       </div>
     </>
