@@ -35,17 +35,17 @@ export function StockMetricCards({
       <div className="grid grid-cols-3 gap-6">
         <MetricCard
           icon={<Package size={16} />}
-          title="Produtos catalogados"
+          title="Produtos Catalogados"
           value={totalStock}
         />
         <MetricCard
           icon={<TriangleAlertIcon size={16} className="text-yellow-500" />}
-          title="Total em risco"
+          title="Itens com Risco de Falta"
           value={totalInRisk}
         />
         <MetricCard
           icon={<SkullIcon size={16} className="text-red-500" />}
-          title="Total em falta"
+          title="Itens Fora de Estoque"
           value={totalMissing}
         />
       </div>
