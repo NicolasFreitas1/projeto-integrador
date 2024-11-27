@@ -7,6 +7,7 @@ import Navbar from "../_components/navbar";
 import TimeSelect from "./_components/time-select";
 import { getDashboard } from "../_data/get-dashboard";
 import { LowStockProducts } from "./_components/low-stock-products";
+import { StockMetricCards } from "./_components/stock-metric-cards";
 
 interface HomeProps {
   searchParams: { month: string };
@@ -42,6 +43,7 @@ export default async function HomePage({ searchParams: { month } }: HomeProps) {
         <div className="grid h-full grid-cols-[2fr,1fr] gap-6 overflow-hidden">
           <div className="flex flex-col gap-6 overflow-hidden">
             {/* CARDS DE RESUMO DOS PRODUTOS */}
+            {dashboard && <StockMetricCards {...dashboard.stockMetrics} />}
             <div className="grid h-full grid-cols-3 grid-rows-1 gap-6 overflow-hidden">
               {/* GRÁFICOS  */}
             </div>

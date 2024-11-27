@@ -44,7 +44,17 @@ export class PrismaDashboardRepository implements DashboardRepository {
   }
 
   async findStockMetrics(): Promise<StockMetrics> {
-    const totalStock = await this.prisma.product.count()
+    const revenueGenerated = await this.prisma.sale.aggregate({
+      _sum: {
+        value: true,
+      },
+    })
+
+    const totalStock = await this.prisma.product.aggregate({
+      _sum: {
+        quantity: true,
+      },
+    })
 
     const totalMissing = await this.prisma.product.count({
       where: {
@@ -62,9 +72,10 @@ export class PrismaDashboardRepository implements DashboardRepository {
     })
 
     return StockMetrics.create({
+      revenueGenerated: revenueGenerated._sum.value ?? 0,
       totalInRisk,
       totalMissing,
-      totalStock,
+      totalStock: totalStock._sum.quantity ?? 0,
     })
   }
 }

@@ -14,7 +14,7 @@ export function LowStockProducts({ lowStockProducts }: LowStockProductsProps) {
       return "text-yellow-500";
     }
 
-    if (product.quantity < 5 && product.quantity > 0) {
+    if (product.quantity < 5 && product.quantity >= 0) {
       return "text-red-500";
     }
     return "text-white";
@@ -32,31 +32,43 @@ export function LowStockProducts({ lowStockProducts }: LowStockProductsProps) {
       </CardHeader>
       <CardContent className="space-y-6 mt-1">
         <ul className="flex flex-col gap-3 p-3 ">
-          {lowStockProducts.map((product) => (
-            <div key={product.id} className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {/* <div className="rounded-lg p-3 text-white">
-                  <ScanBarcode size={20} width={20} />-
-                </div> */}
-                <li className="list-disc items-center">
-                  <p className="text-sm font-bold ">{product.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    Adicionado em:{" "}
-                    {new Date(product.createdAt).toLocaleDateString("pt-BR", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
+          {lowStockProducts.length > 0 ? (
+            lowStockProducts.map((product) => (
+              <div
+                key={product.id}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <li className="list-disc items-center">
+                    <p className="text-sm font-bold ">{product.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      Adicionado em:{" "}
+                      {new Date(product.createdAt).toLocaleDateString("pt-BR", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </li>
+                </div>
+                <div>
+                  <p
+                    className={`text-sm font-bold ${getQuantityColor(product)}`}
+                  >
+                    Quantidade: {product.quantity}
                   </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <li className="list-disc items-center">
+                  <p className="text-sm font-bold ">Nenhum produto em falta</p>
                 </li>
               </div>
-              <div>
-                <p className={`text-sm font-bold ${getQuantityColor(product)}`}>
-                  Quantidade: {product.quantity}
-                </p>
-              </div>
             </div>
-          ))}
+          )}
         </ul>
       </CardContent>
     </ScrollArea>
