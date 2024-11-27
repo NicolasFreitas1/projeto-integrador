@@ -5,7 +5,7 @@ import { Dashboard } from "@/app/_types/dashboard";
 import { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 
-export async function getDashboard() {
+export async function getDashboard(): Promise<Dashboard> {
   try {
     const { data } = await apiServer.get<Dashboard>("dashboard");
 
@@ -18,5 +18,7 @@ export async function getDashboard() {
         redirect("/login");
       }
     }
+
+    throw new Error("Algo aconteceu");
   }
 }

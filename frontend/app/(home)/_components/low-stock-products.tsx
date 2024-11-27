@@ -21,7 +21,7 @@ export function LowStockProducts({ lowStockProducts }: LowStockProductsProps) {
   }
 
   return (
-    <ScrollArea className="rounded-md border">
+    <ScrollArea className="flex rounded-md border h-[700px]">
       <CardHeader className="flex-row items-center justify-between border-b-2">
         <CardTitle className="font-bold">
           Produtos com baixa quantidade
@@ -31,7 +31,7 @@ export function LowStockProducts({ lowStockProducts }: LowStockProductsProps) {
         </Button>
       </CardHeader>
       <CardContent className="space-y-6 mt-1">
-        <ul className="flex flex-col gap-3 p-3 ">
+        <ul className="flex flex-col gap-3 p-3">
           {lowStockProducts.length > 0 ? (
             lowStockProducts.map((product) => (
               <div

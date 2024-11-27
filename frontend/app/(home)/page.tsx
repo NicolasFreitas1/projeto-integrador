@@ -8,6 +8,11 @@ import TimeSelect from "./_components/time-select";
 import { getDashboard } from "../_data/get-dashboard";
 import { LowStockProducts } from "./_components/low-stock-products";
 import { StockMetricCards } from "./_components/stock-metric-cards";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "../_components/ui/carousel";
 
 interface HomeProps {
   searchParams: { month: string };
@@ -49,11 +54,25 @@ export default async function HomePage({ searchParams: { month } }: HomeProps) {
             </div>
           </div>
           {/* TABELA DE ULTIMAS VENDAS */}
-          {dashboard && (
-            <LowStockProducts
-              lowStockProducts={dashboard?.lowQuantityProducts}
-            />
-          )}
+
+          <Carousel>
+            <CarouselContent>
+              <CarouselItem>
+                {dashboard && (
+                  <LowStockProducts
+                    lowStockProducts={dashboard?.lowQuantityProducts}
+                  />
+                )}
+              </CarouselItem>
+              <CarouselItem>
+                {dashboard && (
+                  <LowStockProducts
+                    lowStockProducts={dashboard?.lowQuantityProducts}
+                  />
+                )}
+              </CarouselItem>
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </>
