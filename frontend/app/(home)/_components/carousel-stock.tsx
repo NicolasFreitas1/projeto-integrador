@@ -4,6 +4,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/app/_components/ui/carousel";
 import { LowStockProducts } from "./low-stock-products";
 import { Product } from "@/app/_types/product";
@@ -16,7 +18,12 @@ interface CarouselStockProps {
 
 export function CarouselStock({ lowQuantityProducts }: CarouselStockProps) {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({
+      delay: 3000,
+      stopOnInteraction: true,
+      stopOnMouseEnter: true,
+      playOnInit: true,
+    })
   );
 
   return (
@@ -24,9 +31,11 @@ export function CarouselStock({ lowQuantityProducts }: CarouselStockProps) {
       plugins={[plugin.current]}
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
-      opts={{
-        loop: true,
-      }}
+      opts={
+        {
+          // loop: true,
+        }
+      }
     >
       <CarouselContent>
         <CarouselItem>
@@ -36,6 +45,8 @@ export function CarouselStock({ lowQuantityProducts }: CarouselStockProps) {
           <LowStockProducts lowStockProducts={lowQuantityProducts} />
         </CarouselItem>
       </CarouselContent>
+      <CarouselPrevious className="ml-10" />
+      <CarouselNext className="mr-10" />
     </Carousel>
   );
 }

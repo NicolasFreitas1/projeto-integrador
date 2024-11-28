@@ -20,6 +20,7 @@ export function LowStockProducts({ lowStockProducts }: LowStockProductsProps) {
     return "text-white";
   }
 
+  // VER PARA TRANSFORMAR EM TABELA, COM UM PONTINHO PARA SER O "STATUS" DO ITEM
   return (
     <ScrollArea className="flex rounded-md border h-[700px]">
       <CardHeader className="flex-row items-center justify-between border-b-2">
