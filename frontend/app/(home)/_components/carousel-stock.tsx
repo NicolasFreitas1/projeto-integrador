@@ -45,8 +45,8 @@ export function CarouselStock({ lowQuantityProducts }: CarouselStockProps) {
           <LowStockProducts lowStockProducts={lowQuantityProducts} />
         </CarouselItem>
       </CarouselContent>
-      <CarouselPrevious className="ml-10" />
-      <CarouselNext className="mr-10" />
+      <CarouselPrevious className="ml-16" />
+      <CarouselNext className="mr-16" />
     </Carousel>
   );
 }
