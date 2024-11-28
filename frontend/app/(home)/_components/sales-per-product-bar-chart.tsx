@@ -14,7 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/app/_components/ui/chart";
-import { SalePerProduct } from "@/app/_types/sale-per-product";
+import { SalePerProductName } from "@/app/_types/sale-per-product-with-product-name";
 
 const chartConfig = {
   totalSales: {
@@ -24,29 +24,32 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 interface SalesPerProductBarChart {
-  salesPerProduct: SalePerProduct[];
+  salesPerProduct: SalePerProductName[];
 }
 
 export function SalesPerProductBarChart({
   salesPerProduct,
 }: SalesPerProductBarChart) {
-  const chartData: SalePerProduct[] = salesPerProduct;
+  const chartData: SalePerProductName[] = salesPerProduct;
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="flex flex-col p-6">
+      <CardHeader className="flex-1 pb-0">
         <CardTitle>Total de vendas por produto</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="productId"
+              dataKey="productName"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              // tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip
               cursor={false}

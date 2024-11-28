@@ -9,6 +9,7 @@ import { CarouselStock } from "./_components/carousel-stock";
 import { StockMetricCards } from "./_components/stock-metric-cards";
 import TimeSelect from "./_components/time-select";
 import { SalesPerProductBarChart } from "./_components/sales-per-product-bar-chart";
+import { SalesBySellerProgress } from "./_components/sales-by-seller";
 
 interface HomeProps {
   searchParams: { month: string };
@@ -48,7 +49,8 @@ export default async function HomePage({ searchParams: { month } }: HomeProps) {
               <SalesPerProductBarChart
                 salesPerProduct={dashboard.salesPerProduct}
               />
-       
+
+              <SalesBySellerProgress salesBySeller={dashboard.salesBySeller} />
             </div>
           </div>
           {/* TABELA DE ULTIMAS VENDAS */}

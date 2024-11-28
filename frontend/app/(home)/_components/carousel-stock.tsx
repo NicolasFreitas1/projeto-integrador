@@ -37,7 +37,7 @@ export function CarouselStock({ lowQuantityProducts }: CarouselStockProps) {
         }
       }
     >
-      <CarouselContent>
+      <CarouselContent className="min-h-[750px]">
         <CarouselItem>
           <LowStockProducts lowStockProducts={lowQuantityProducts} />
         </CarouselItem>
