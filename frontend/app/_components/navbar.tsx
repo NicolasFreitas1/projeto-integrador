@@ -29,7 +29,9 @@ export default function Navbar() {
 
   useEffect(() => {
     getServerUserSession();
-  }, [setUserSession]);
+
+    console.log(userSession);
+  }, [userSession]);
 
   return (
     <nav className="flex justify-between border-b border-solid px-8 py-4">
