@@ -66,21 +66,18 @@ export default function Navbar() {
         >
           Produtos
         </Link>
-        {userSession?.isAdmin && (
-          <Link
-            href="/users"
-            className={
-              pathname === "/users"
-                ? "text-bold text-primary"
-                : "text-muted-foreground"
-            }
-          >
-            Usuários
-          </Link>
-        )}
+
+        <Link
+          href="/users"
+          className={
+            pathname === "/users"
+              ? "text-bold text-primary"
+              : "text-muted-foreground"
+          }
+        >
+          Usuários
+        </Link>
       </div>
-      {/* DIREITA */}
-      {userSession?.name}
       <LogOut />
     </nav>
   );
