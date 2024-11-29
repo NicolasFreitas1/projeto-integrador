@@ -1,3 +1,5 @@
+"use server";
+
 import { CardContent, CardHeader, CardTitle } from "@/app/_components/ui/card";
 import { Progress } from "@/app/_components/ui/progress";
 import { SalesBySellerName } from "@/app/_types/sales-by-seller-name";

@@ -13,6 +13,7 @@ async function createAdminUser() {
       name: 'admin',
       login: 'admin',
       password: await hash('12345', 8),
+      isAdmin: true,
     },
   })
 }
